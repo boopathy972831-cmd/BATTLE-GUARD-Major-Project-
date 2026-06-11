@@ -1,0 +1,45 @@
+#ifndef __HEADER_H__
+#define __HEADER_H__
+
+#include <LPC21xx.h>
+
+typedef unsigned int u32;
+typedef unsigned char u8;
+
+typedef struct CAN_MSG
+{
+    u32 id;
+    u32 dlc;
+    u32 rtr;
+    u32 byteA;
+    u32 byteB;
+}CAN_MSG;
+
+/* CAN */
+void can2_init(void);
+void can2_tx(CAN_MSG m);
+void can2_rx(CAN_MSG *m);
+
+/* UART */
+void uart0_init(u32 baud);
+u8 uart0_rx(void);
+void uart0_tx(u8 data);
+void uart0_tx_string(char *s);
+
+/* LCD */
+void lcd_init(void);
+void lcd_cmd(u8 cmd);
+void lcd_data(u8 data);
+void lcd_string(char *s);
+
+/* RFID */
+void rfid_read(char *tag);
+
+/* Servo */
+void servo_init(void);
+void servo_open(void);
+void servo_close(void);
+
+void delay_ms(u32 ms);
+
+#endif
