@@ -1,0 +1,29 @@
+#include "header.h"
+
+CAN_MSG msg;
+
+int main()
+{
+    lcd_init();
+    can2_init();
+
+    while(1)
+    {
+        can2_rx(&msg);
+
+        lcd_cmd(0x01);
+
+        if(msg.byteA == 1)
+        {
+            lcd_string("RFID VERIFIED");
+            lcd_cmd(0xC0);
+            lcd_string("ACCESS GRANTED");
+        }
+        else
+        {
+            lcd_string("UNAUTHORIZED");
+            lcd_cmd(0xC0);
+            lcd_string("ACCESS DENIED");
+        }
+    }
+}
