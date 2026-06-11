@@ -1,0 +1,23 @@
+#include "header.h"
+
+CAN_MSG msg;
+
+int main()
+{
+    servo_init();
+    can2_init();
+
+    while(1)
+    {
+        can2_rx(&msg);
+
+        if(msg.byteA == 1)
+        {
+            servo_open();
+
+            delay_ms(5000);
+
+            servo_close();
+        }
+    }
+}
