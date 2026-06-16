@@ -1,23 +1,37 @@
-#include "header.h"
 
-CAN_MSG msg;
+#include <LPC21xx.h>
+
+void PWM_Init(void)
+{
+    PINSEL0 |= (1<<0);      // P0.0 as PWM1
+
+    PWMPCR = (1<<9);        // Enable PWM1 output
+    PWMMR0 = 20000;         // 20 ms period
+    PWMMR1 = 1500;          // 90 degree position
+
+    PWMMCR = (1<<1);        // Reset on MR0
+    PWMLER = (1<<0) | (1<<1);
+
+    PWMTCR = (1<<1);        // Reset PWM counter
+    PWMTCR = (1<<0) | (1<<3); // Enable PWM and counter
+}
 
 int main()
 {
-    servo_init();
-    can2_init();
+    PWM_Init();
 
     while(1)
     {
-        can2_rx(&msg);
+        PWMMR1 = 1000;      // 0 degree
+        PWMLER = (1<<1);
+        delay_ms(1000);
 
-        if(msg.byteA == 1)
-        {
-            servo_open();
+        PWMMR1 = 1500;      // 90 degree
+        PWMLER = (1<<1);
+        delay_ms(1000);
 
-            delay_ms(5000);
-
-            servo_close();
-        }
+        PWMMR1 = 2000;      // 180 degree
+        PWMLER = (1<<1);
+        delay_ms(1000);
     }
 }
