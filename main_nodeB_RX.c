@@ -248,3 +248,4 @@ IOSET0=E;
 delay_milliseconds(2);
 IOCLR0=E;
 }
+
